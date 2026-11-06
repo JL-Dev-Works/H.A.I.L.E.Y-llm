@@ -1,0 +1,5 @@
+llama-cpp-python
+ddgs
+PySide6
+pypdf>=5.0.0
+dotenv

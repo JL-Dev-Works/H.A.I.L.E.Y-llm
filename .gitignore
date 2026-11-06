@@ -1,0 +1,10 @@
+.env
+.venv/
+.venv-gpu/
+
+user/
+logs/
+
+__pycache__/
+*.py[cod]
+.vscode/
