@@ -4,6 +4,7 @@
 
 user/
 logs/
+old code/
 
 __pycache__/
 *.py[cod]

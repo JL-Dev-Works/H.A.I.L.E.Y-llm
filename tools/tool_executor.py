@@ -1,12 +1,11 @@
 
 import inspect
 
-from pathlib import Path
-
 import config
 
 from tools.internet_access.web_search import WebResearchTool
 from tools.file_reader import FileReaderTool
+from tools.file_archiver import FileArchiverTool
 from core.memory_manager import MemoryManager
 
 
@@ -16,9 +15,9 @@ class ToolExecutor:
 
         self.web = WebResearchTool()
         self.memory = memory_manager or MemoryManager()
+        self.archiver = FileArchiverTool()
 
-
-
+        # File Reader configuratie
         directory = getattr(
             config,
             "FILE_READER_DIRECTORY",
@@ -44,8 +43,7 @@ class ToolExecutor:
             ),
         )
 
-
-
+        # Beschikbare tools
         self.tools = {
 
             # Internet
@@ -65,10 +63,15 @@ class ToolExecutor:
             "FileRead": self.file_reader.read_file,
             "FileList": self.file_reader.list_files,
             "FileInfo": self.file_reader.get_file_info,
+
+            # File Archiver
+            "ArchiveFile": self.archiver.archive_file,
+            "ArchiveAll": self.archiver.archive_all,
+            "ArchiveList": self.archiver.list_archived_files,
+            "ArchiveStatistics": self.archiver.get_archive_statistics,
         }
 
-
-
+        # Alternatieve toolnamen
         self.aliases = {
 
             # Internet
@@ -117,9 +120,20 @@ class ToolExecutor:
             "file_info": "FileInfo",
             "getfileinfo": "FileInfo",
             "get_file_info": "FileInfo",
+
+            # File Archiver
+            "archivefile": "ArchiveFile",
+            "archive_file": "ArchiveFile",
+
+            "archiveall": "ArchiveAll",
+            "archive_all": "ArchiveAll",
+
+            "archivelist": "ArchiveList",
+            "archive_list": "ArchiveList",
+
+            "archivestatistics": "ArchiveStatistics",
+            "archive_statistics": "ArchiveStatistics",
         }
-
-
 
     def normalize_tool_name(self, tool_name):
 
@@ -133,13 +147,13 @@ class ToolExecutor:
             tool_name.strip(),
         )
 
-
-
     def execute(self, tool_name, arguments=None):
 
         """
         Voert een tool uit en geeft altijd een gestructureerd
         resultaat terug.
+
+        De successtatus van de tool zelf wordt overgenomen.
         """
 
         tool_name = self.normalize_tool_name(tool_name)
@@ -190,10 +204,32 @@ class ToolExecutor:
 
             signature = inspect.signature(tool)
 
+            # Controleer of de argumenten overeenkomen.
             signature.bind(**arguments)
 
+            # Voer de tool uit.
             result = tool(**arguments)
 
+            # Neem de successtatus van de tool zelf over.
+            if isinstance(result, dict) and "success" in result:
+
+                tool_success = result["success"]
+
+                response = {
+                    "success": tool_success,
+                    "tool": tool_name,
+                    "result": result,
+                }
+
+                if not tool_success:
+                    response["error_type"] = result.get(
+                        "error_type",
+                        "ToolExecutionFailed",
+                    )
+
+                return response
+
+            # Tools zonder eigen successtatus.
             return {
                 "success": True,
                 "tool": tool_name,
@@ -217,8 +253,6 @@ class ToolExecutor:
                 "error": str(error),
                 "error_type": type(error).__name__,
             }
-
-
 
     def get_available_tools(self):
 

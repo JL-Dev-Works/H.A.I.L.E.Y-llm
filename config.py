@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from user.preference import USER_PREFERENCE
 
 
 
@@ -20,6 +21,95 @@ MODELS_DIR = ROOT / "models"
 DATA_DIR = ROOT / "data"
 LOG_DIR = ROOT / "logs"
 USER_DIR = ROOT / "user"
+
+
+# ==========================================
+# USER FILE DIRECTORIES
+# ==========================================
+
+def get_user_directory(env_name: str, default: str) -> Path:
+    """
+    Resolve a user directory and prevent access outside USER_DIR.
+    Relative paths are resolved from USER_DIR.
+    """
+
+    raw_path = os.getenv(env_name, default)
+    path = Path(raw_path).expanduser()
+
+    if not path.is_absolute():
+        path = USER_DIR / path
+
+    path = path.resolve()
+    user_root = USER_DIR.resolve()
+
+    if not path.is_relative_to(user_root):
+        raise ValueError(
+            f"{env_name} must be located inside USER_DIR."
+        )
+
+    return path
+
+
+ARCHIVE_DIR = get_user_directory(
+    "ARCHIVE_DIR", "archive"
+)
+
+IMPORT_DIR = get_user_directory(
+    "IMPORT_DIR", "imports"
+)
+
+EXPORT_DIR = get_user_directory(
+    "EXPORT_DIR", "exports"
+)
+
+METADATA_DIR = get_user_directory(
+    "METADATA_DIR", "metadata"
+)
+
+ARCHIVE_DATABASE = METADATA_DIR / "archive.json"
+
+
+# Maximum archive file size
+ARCHIVE_MAX_SIZE_MB = int(
+    os.getenv("ARCHIVE_MAX_SIZE_MB", "100")
+)
+
+
+# Allowed file extensions
+ARCHIVE_ALLOWED_EXTENSIONS = {
+    ".txt", ".md", ".pdf",
+    ".doc", ".docx",
+    ".xls", ".xlsx",
+    ".ppt", ".pptx",
+    ".csv", ".json", ".xml",
+    ".yaml", ".yml", ".toml",
+    ".ini", ".log",
+    ".png", ".jpg", ".jpeg",
+    ".gif", ".webp", ".bmp",
+    ".svg", ".ico",
+    ".py", ".js", ".ts",
+    ".html", ".css",
+    ".sql", ".sh",
+    ".java", ".cpp", ".c",
+    ".h", ".hpp", ".rs",
+    ".go", ".php",
+}
+
+
+# Create user directories
+for directory in (
+    ARCHIVE_DIR,
+    IMPORT_DIR,
+    EXPORT_DIR,
+    METADATA_DIR,
+    ARCHIVE_DIR / "documents",
+    ARCHIVE_DIR / "images",
+    ARCHIVE_DIR / "code",
+    ARCHIVE_DIR / "research",
+    ARCHIVE_DIR / "uncategorized",
+):
+    directory.mkdir(parents=True, exist_ok=True)
+
 
 
 # Create directories if they don't exist
@@ -59,6 +149,17 @@ N_THREADS = 4
 N_CTX = 8192
 MAX_TOKENS = 2048
 
+
+
+# Probeer gebruikersvoorkeuren te importeren
+try:
+    from user.preference import USER_PREFERENCE
+
+    if not isinstance(USER_PREFERENCE, str):
+        USER_PREFERENCE = ""
+
+except (ImportError, AttributeError):
+    USER_PREFERENCE = ""
 
 
 SYSTEM_PROMPT = """
@@ -102,6 +203,18 @@ You do not need to impress the user. Just be useful.
 """
 
 
+# Combineer de originele prompt met gebruikersvoorkeuren
+FINAL_SYSTEM_PROMPT = SYSTEM_PROMPT
+
+if USER_PREFERENCE.strip():
+    FINAL_SYSTEM_PROMPT += f"""
+
+USER PREFERENCES (HIGHER PRIORITY):
+The following instructions come directly from the user.
+They override any conflicting instructions in the default system prompt.
+
+{USER_PREFERENCE}
+"""
 
 
 MEMORY_ENABLED = True

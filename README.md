@@ -27,6 +27,9 @@ This project is a work in progress. Expect bugs, unexpected behavior, and questi
 
 ---
 
+## known problems
+The model used for testing is gemma 4 e4b, the problem is that most pretrained models have different outputs and the code is almost completely based around this model. So it is likely a part of the tool code will have to be changed or some sort of translator code as a middle man will be needed for other models to work correctly.
+
 ## Disclaimer
 
 This software is provided "as is", without warranty of any kind.
