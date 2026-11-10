@@ -18,6 +18,16 @@ A .env file is needed with the following directory's
   - ARCHIVE_MAX_SIZE_MB=100
     - needed for the archiver tool, if not changed these will be the default directorys within the root folder.
 
+
+
+Under the folder user/ in the root folder there will be a file needed called preference.py in here the user can set custom system prompts that will always be chosen first if conflicting with a original system prompt from config.py. when this file is missing or empty the llm will just juse the original system prompt. the preference.py file will need the following format.
+
+ - USER_PREFERENCE = """
+   
+   Your custom prompt.
+
+   """
+
 Run main.py for the LLM to boot up.
 
 ---

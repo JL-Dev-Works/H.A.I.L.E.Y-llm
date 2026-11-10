@@ -1,5 +1,5 @@
 
-from config import SYSTEM_PROMPT
+from config import FINAL_SYSTEM_PROMPT
 
 
 class Conversation:
@@ -10,7 +10,7 @@ class Conversation:
 
         self.system_message = {
             "role": "system",
-            "content": SYSTEM_PROMPT
+            "content": FINAL_SYSTEM_PROMPT
         }
 
     def add_user(self, message):
