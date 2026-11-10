@@ -1,11 +1,8 @@
 
 import hashlib
-
 from pathlib import Path
-
 from tools.file_manager.file_manager import FileManager
 from tools.file_manager.archive_database import ArchiveDatabase
-
 
 class FileArchiverTool:
 

@@ -6,13 +6,14 @@ from user.preference import USER_PREFERENCE
 
 
 
-
 ROOT = Path(__file__).resolve().parent
 
 load_dotenv(ROOT / ".env")
 
 
-
+#---
+#  Values that can be changed here. (other values can adjusted in the .env file acording to the README, most of those values are too sensitive to just leave here) 
+#---
 
 CORE_DIR = ROOT / "core"
 TOOLS_DIR = ROOT / "tools"
@@ -22,10 +23,31 @@ DATA_DIR = ROOT / "data"
 LOG_DIR = ROOT / "logs"
 USER_DIR = ROOT / "user"
 
+#-----
 
-# ==========================================
-# USER FILE DIRECTORIES
-# ==========================================
+FILE_READER_MAX_SIZE_MB = 10
+FILE_READER_MAX_OUTPUT_CHARS = 30_000
+
+#---
+
+MEMORY_ENABLED = True
+# Automatically recognize and save memories
+MEMORY_AUTO_SAVE = True
+# Minimum importance for automatic memories
+MEMORY_MIN_IMPORTANCE = 2
+# Maximum memories added to model context
+MEMORY_MAX_CONTEXT_ITEMS = 10
+# Maximum characters used by memory context
+MEMORY_MAX_CONTEXT_CHARS = 3000
+# SQLite database
+MEMORY_DB_PATH = USER_DIR / "memory.db"
+# Short-term conversation memory
+SHORT_TERM_MAX_MESSAGES = 30
+
+#---
+
+
+
 
 def get_user_directory(env_name: str, default: str) -> Path:
     """
@@ -132,10 +154,6 @@ FILE_READER_DIRECTORY = Path(
     )
 )
 
-FILE_READER_MAX_SIZE_MB = 10
-FILE_READER_MAX_OUTPUT_CHARS = 30_000
-
-
 
 
 MODEL_PATH = Path(
@@ -215,24 +233,3 @@ They override any conflicting instructions in the default system prompt.
 
 {USER_PREFERENCE}
 """
-
-
-MEMORY_ENABLED = True
-
-# Automatically recognize and save memories
-MEMORY_AUTO_SAVE = True
-
-# Minimum importance for automatic memories
-MEMORY_MIN_IMPORTANCE = 2
-
-# Maximum memories added to model context
-MEMORY_MAX_CONTEXT_ITEMS = 10
-
-# Maximum characters used by memory context
-MEMORY_MAX_CONTEXT_CHARS = 3000
-
-# SQLite database
-MEMORY_DB_PATH = USER_DIR / "memory.db"
-
-# Short-term conversation memory
-SHORT_TERM_MAX_MESSAGES = 30

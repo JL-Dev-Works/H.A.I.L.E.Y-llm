@@ -7,8 +7,6 @@ class ToolManager:
     def __init__(self):
         self.tools: dict[str, dict[str, Any]] = {}
 
-
-
     def register(
         self,
         name: str,
@@ -31,7 +29,6 @@ class ToolManager:
         }
 
 
-
     def execute(self, name: str, **kwargs) -> Any:
 
         if name not in self.tools:
@@ -45,7 +42,6 @@ class ToolManager:
         return tool["function"](**kwargs)
 
  
-
     def list_tools(self) -> dict:
 
         return {
@@ -56,14 +52,12 @@ class ToolManager:
         }
 
 
-
     def get_tool_descriptions(self) -> dict[str, str]:
 
         return {
             name: tool["description"]
             for name, tool in self.tools.items()
         }
-
 
     def has_tool(self, name: str) -> bool:
 

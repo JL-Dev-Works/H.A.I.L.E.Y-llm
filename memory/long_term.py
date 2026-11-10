@@ -1,6 +1,5 @@
 
 import logging
-
 from memory.database import MemoryDatabase
 
 
@@ -12,9 +11,6 @@ class LongTermMemory:
     def __init__(self):
         self.database = MemoryDatabase()
 
-    # ==========================================
-    # SAVE MEMORY
-    # ==========================================
 
     def remember(
         self,
@@ -71,9 +67,6 @@ class LongTermMemory:
 
             return False
 
-    # ==========================================
-    # SAVE CLASSIFIER RESULT
-    # ==========================================
 
     def save_classified_memory(self, memory):
 
@@ -127,9 +120,6 @@ class LongTermMemory:
 
             return False
 
-    # ==========================================
-    # UPDATE MEMORY
-    # ==========================================
 
     def update_memory(
         self,
@@ -209,9 +199,6 @@ class LongTermMemory:
 
             return False
 
-    # ==========================================
-    # GET MEMORIES
-    # ==========================================
 
     def get_memories(self, category=None, limit=100):
 
@@ -256,9 +243,7 @@ class LongTermMemory:
 
             return []
 
-    # ==========================================
-    # GET SINGLE MEMORY
-    # ==========================================
+
 
     def get_memory(self, category, key):
 
@@ -285,9 +270,7 @@ class LongTermMemory:
 
             return None
 
-    # ==========================================
-    # DELETE MEMORY
-    # ==========================================
+
 
     def forget(self, memory_id):
 
@@ -318,9 +301,6 @@ class LongTermMemory:
 
             return False
 
-    # ==========================================
-    # CLEAR ALL MEMORIES
-    # ==========================================
 
     def clear_memory(self):
 
@@ -344,9 +324,6 @@ class LongTermMemory:
 
             return False
 
-    # ==========================================
-    # COUNT MEMORIES
-    # ==========================================
 
     def count_memories(self):
 
