@@ -94,7 +94,7 @@ class ChatMessage(QWidget):
         layout.setSpacing(8)
 
         self.name = QLabel(
-            "Jij" if role == "user" else "Agent"
+            "Jij" if role == "user" else "H.A.I.L.E.Y"
         )
         self.name.setObjectName("messageName")
 
@@ -169,7 +169,7 @@ class HaileyWindow(QMainWindow):
         self.current_message = None
 
 
-        self.setWindowTitle("Agent")
+        self.setWindowTitle("H.A.I.L.E.Y")
         self.resize(1100, 800)
         self.setMinimumSize(700, 500)
 
@@ -194,7 +194,7 @@ class HaileyWindow(QMainWindow):
         header_layout = QHBoxLayout(header)
         header_layout.setContentsMargins(24, 16, 24, 16)
 
-        title = QLabel("Agent")
+        title = QLabel("H.A.I.L.E.Y")
         title.setObjectName("appTitle")
 
         subtitle = QLabel("Local AI Assistant")

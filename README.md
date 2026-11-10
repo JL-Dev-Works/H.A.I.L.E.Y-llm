@@ -1,12 +1,4 @@
 ## Welcome,
-
-- Yes it has many problems.
-- No i don't have proper documentation.
-- I'm pretty sure even god doesn't know what is going on here.
-- The code itself is a mess of Dutch and English.
-
-Anyway,
-
 I only test the code on a windows pc, it should work on linux for the most part but I have not tested this yet. About macOS I have no idea.
 
 All personal files are saved in the folder user.
@@ -19,6 +11,13 @@ A .env file is needed with the following directory's
    - MODEL_PATH=
      - The code expects a .gguf (for example gemma 4 e4b).
 
+  - ARCHIVE_DIR=archive
+  - IMPORT_DIR=imports
+  - EXPORT_DIR=exports
+  - METADATA_DIR=metadata
+  - ARCHIVE_MAX_SIZE_MB=100
+    - needed for the archiver tool, if not changed these will be the default directorys within the root folder.
+
 Run main.py for the LLM to boot up.
 
 ---
@@ -28,7 +27,10 @@ This project is a work in progress. Expect bugs, unexpected behavior, and questi
 ---
 
 ## known problems
-The model used for testing is gemma 4 e4b, the problem is that most pretrained models have different outputs and the code is almost completely based around this model. So it is likely a part of the tool code will have to be changed or some sort of translator code as a middle man will be needed for other models to work correctly.
+- The model used for testing is gemma 4 e4b, the problem is that most pretrained models have different outputs and the code is almost completely based around this model. So it is likely a   part of the tool code will have to be changed or some sort of translator code as a middle man will be needed for other models to work correctly.
+- The loading icon displayed when the agent is doing something is off centered.
+
+
 
 ## Disclaimer
 
